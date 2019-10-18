@@ -1,18 +1,22 @@
 <template>
   <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+    <input
+      v-on:input="value = $event.target.value"
+      v-bind:value="value"
+    >
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
 export default {
   name: 'app',
-  components: {
-    HelloWorld
-  }
+
+  data () {
+    return {
+      value: 'wartość początkowa'
+    }
+  },
 }
 </script>
 
