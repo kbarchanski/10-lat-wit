@@ -1,21 +1,11 @@
 <template>
   <div class="container" id="app">
     <h1>Przygarnij psa</h1>
-    <div class="form-group position-relative">
-      <label for="filter">Filtruj</label>
-      <input class="form-control" id="filter" autocomplete="off" v-model="value" />
-      <div v-if="typeahead.length" class="dropdown-menu" :class="{'show': showDropdown}">
-        <a
-          v-for="dog of typeahead"
-          :key="dog"
-          class="dropdown-item"
-          href="#"
-          @click="selectItem(dog)"
-        >
-          {{ dog }}
-        </a>
-      </div>
-    </div>
+    <input-with-dropdown
+      v-model="value"
+      :dogs="dogs"
+      @selectItem="selectItem"
+    /> 
     <button class="btn btn-primary" @click="search">Szukaj</button>
 
     <h2>Nasze pieski</h2>
@@ -40,33 +30,21 @@
 </template>
 
 <script>
+import InputWithDropdown from './components/InputWithDropdown'
 
 export default {
   name: 'app',
+
+  components: {
+    InputWithDropdown,
+  },
 
   data () {
     return {
       value: '',
       dogs: ['Abadon', 'Abar', 'Abi', 'Abis', 'Abrams', 'Abraxas', 'Abu', 'Babi', 'Baca', 'Bachus', 'Baddy', 'Badyl', 'Dalia', 'Dalima'],
       filteredDogs: [],
-      showDropdown: false,
     }
-  },
-
-  computed: {
-    typeahead () {
-      if (this.value) {
-        const regex = new RegExp(this.value, 'i')
-        return this.dogs.filter(dog => regex.test(dog))
-      }
-      return []
-    },
-  },
-
-  watch : {
-    value () {
-      this.showDropdown = true
-    },
   },
 
   created () {
@@ -91,7 +69,6 @@ export default {
     },
     selectItem (dog) {
       this.value = dog
-      this.showDropdown = false
       this.search()
     },
   }
